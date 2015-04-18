@@ -18,9 +18,10 @@ int main() {
 	outputPin(24, &peripheral);
 	for(i = 0; i < 10; i++) {
 		setPin(24, &peripheral);
-		sleep(5);
+		sleep(2);
 		clearPin(24, &peripheral);
-		sleep(5);
+		sleep(2);
+		printf("Pin read lecture: %d\n", readPin(23, &peripheral));
 	}
 	releaseMapping(&peripheral);
 	return 0;
