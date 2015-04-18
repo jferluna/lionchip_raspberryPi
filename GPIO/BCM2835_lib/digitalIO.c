@@ -36,6 +36,7 @@ int setupGPIO(struct raspberry_peripheral* rp) {
 	rp->virtualMem = mmap(NULL, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, rp->memFileDescriptor, rp->physicalAddress);
 
 	if(rp->virtualMem == MAP_FAILED) {
+		printf("Error:\n");
 		perror(NULL);
 		return -1;
 	}

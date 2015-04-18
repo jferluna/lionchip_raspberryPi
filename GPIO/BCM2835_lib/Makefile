@@ -1,2 +1,6 @@
-all:
-	gcc -o digitalIO.o digitalIO.c
+all: digitalIO.o
+	gcc -o main main.c
+digitalIO.o:
+	gcc -c digitalIO.c
+clean:
+	rm *o 
