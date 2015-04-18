@@ -58,7 +58,7 @@ void releaseMapping(struct raspberry_peripheral* rp) {
 
 void inputPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPFSEL# register (address 0x7E200000 - 0x7E200014) 
-	unsigned int *pinRegister = peripheral->address + pin/10;
+	volatile unsigned int *pinRegister = peripheral->address + pin/10;
 	//Set group of 3 bits to 000 in order to enable pin as input
 	*pinRegister &= ~(0x07 << (pin%10 * 3));
 	return;
@@ -66,7 +66,7 @@ void inputPin(int pin, struct raspberry_peripheral* peripheral) {
 
 void outputPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPFSEL# register (address 0x7E200000 - 0x7E200014) 
-	unsigned int *pinRegister = peripheral->address + pin/10;
+	volatile unsigned int *pinRegister = peripheral->address + pin/10;
 	//Set group of 3 bits to 001 in order to enable pin as output
 	*pinRegister |= 0x01 << (pin%10 * 3);
 	return;
@@ -74,7 +74,7 @@ void outputPin(int pin, struct raspberry_peripheral* peripheral) {
 
 void setPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPSET0 register (address 0x7E20001C) 
-	unsigned int *pinRegister = peripheral->address + 7;
+	volatile unsigned int *pinRegister = peripheral->address + 7;
 	//Set bit in order to put pin as HIGH
 	*pinRegister = 0x01 << pin;
 	return;
@@ -82,7 +82,7 @@ void setPin(int pin, struct raspberry_peripheral* peripheral) {
 
 void clearPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPCLR0 register (address 0x7E200028) 
-	unsigned int *pinRegister = peripheral->address + 10;
+	volatile unsigned int *pinRegister = peripheral->address + 10;
 	//Set bit in order to put pin as LOW
 	*pinRegister = 0x01 << pin;
 	return;
@@ -90,7 +90,7 @@ void clearPin(int pin, struct raspberry_peripheral* peripheral) {
 
 int readPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPLEV0 register (address 0x7E200034)
-	unsigned int *pinRegister = peripheral->address + 13;
+	volatile unsigned int *pinRegister = peripheral->address + 13;
 	//Get pin value
 	*pinRegister &= 0x01 << pin;
 	return *pinRegister;
