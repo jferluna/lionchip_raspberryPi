@@ -11,17 +11,14 @@
 #define GPIO_BASE (PERIPHERALS_PHYSICAL_ADDRESS + GPIO_OFFSET)
 #define BLOCK_SIZE 4096
 
-/*
-*	GPIO STRUCTURES
-*/
-struct raspberry_peripheral {
+typedef struct _raspberry_peripheral {
 	unsigned int physicalAddress;
 	int memFileDescriptor;
 	void* virtualMem;
 	volatile unsigned int* address;
-};
+} raspberry_peripheral;
 
-int configGPIO(struct raspberry_peripheral* rp) {
+int configGPIO(raspberry_peripheral* rp) {
 	//Sets GPIO physical offset
 	rp->physicalAddress = GPIO_BASE;
 	//Opens file with physical memory mapping
@@ -49,14 +46,14 @@ int configGPIO(struct raspberry_peripheral* rp) {
 	return 0;
 }
 
-void releaseMapping(struct raspberry_peripheral* rp) {
+void releaseMapping(raspberry_peripheral* rp) {
 	if(rp->virtualMem != NULL && rp->virtualMem != MAP_FAILED)
 		munmap(rp->virtualMem, BLOCK_SIZE);
 	close(rp->memFileDescriptor);
 	return;
 }
 
-void inputPin(int pin, struct raspberry_peripheral* peripheral) {
+void inputPin(int pin, raspberry_peripheral* peripheral) {
 	//Point to GPFSEL# register (address 0x7E200000 - 0x7E200014) 
 	volatile unsigned int *pinRegister = peripheral->address + pin/10;
 	//Set group of 3 bits to 000 in order to enable pin as input
@@ -64,7 +61,7 @@ void inputPin(int pin, struct raspberry_peripheral* peripheral) {
 	return;
 }
 
-void outputPin(int pin, struct raspberry_peripheral* peripheral) {
+void outputPin(int pin, raspberry_peripheral* peripheral) {
 	//Point to GPFSEL# register (address 0x7E200000 - 0x7E200014) 
 	volatile unsigned int *pinRegister = peripheral->address + pin/10;
 	//Set group of 3 bits to 001 in order to enable pin as output
@@ -72,7 +69,7 @@ void outputPin(int pin, struct raspberry_peripheral* peripheral) {
 	return;
 }
 
-void setPin(int pin, struct raspberry_peripheral* peripheral) {
+void setPin(int pin, raspberry_peripheral* peripheral) {
 	//Point to GPSET0 register (address 0x7E20001C) 
 	volatile unsigned int *pinRegister = peripheral->address + 7;
 	//Set bit in order to put pin as HIGH
@@ -80,7 +77,7 @@ void setPin(int pin, struct raspberry_peripheral* peripheral) {
 	return;
 }
 
-void clearPin(int pin, struct raspberry_peripheral* peripheral) {
+void clearPin(int pin, raspberry_peripheral* peripheral) {
 	//Point to GPCLR0 register (address 0x7E200028) 
 	volatile unsigned int *pinRegister = peripheral->address + 10;
 	//Set bit in order to put pin as LOW
@@ -88,7 +85,7 @@ void clearPin(int pin, struct raspberry_peripheral* peripheral) {
 	return;
 }
 
-int readPin(int pin, struct raspberry_peripheral* peripheral) {
+int readPin(int pin, raspberry_peripheral* peripheral) {
 	//Point to GPLEV0 register (address 0x7E200034)
 	volatile unsigned int *pinRegister = peripheral->address + 13;
 	//Return pin value

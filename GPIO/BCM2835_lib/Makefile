@@ -1,5 +1,5 @@
 all: digitalIO.o
-	gcc -o main main.c
+	gcc -o main main.c digitalIO.c
 digitalIO.o:
 	gcc -c digitalIO.c
 clean:
