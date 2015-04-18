@@ -2,17 +2,13 @@
 #include <unistd.h>
 #include "digitalIO.c"
 
-#define DEV 1
+#define DEV 0
 
 
 int main() {
 	int i;
 	struct raspberry_peripheral peripheral;
 	configGPIO(&peripheral);
-
-#if DEV
-	printf("Pheripheral address: %d\n", peripheral.address);
-#endif
 
 	inputPin(23, &peripheral);
 	outputPin(24, &peripheral);
@@ -21,7 +17,7 @@ int main() {
 		sleep(2);
 		clearPin(24, &peripheral);
 		sleep(2);
-		printf("Pin read lecture: %d\n", readPin(23, &peripheral));
+		printf("Pin read lecture: %u\n", readPin(23, &peripheral));
 	}
 	releaseMapping(&peripheral);
 	return 0;

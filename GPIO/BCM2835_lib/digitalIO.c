@@ -93,5 +93,6 @@ int readPin(int pin, struct raspberry_peripheral* peripheral) {
 	volatile unsigned int *pinRegister = peripheral->address + 13;
 	//Get pin value
 	*pinRegister &= 0x01 << pin;
+	printf("PIN REGISTER %u\n", *pinRegister);
 	return *pinRegister;
 }
