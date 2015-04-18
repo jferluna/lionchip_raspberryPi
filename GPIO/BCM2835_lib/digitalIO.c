@@ -92,8 +92,8 @@ int readPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPLEV0 register (address 0x7E200034)
 	volatile unsigned int *pinRegister = peripheral->address + 13;
 	//Get pin value
-	*pinRegister &= 0x01 << pin;
-	printf("Shift %X\n", 0x01 << pin);
+	*pinRegister = *pinRegister & (0x01 << pin);
+	printf("Shift %X\n",  *pinRegister & (0x01 << pin));
 	printf("PIN REGISTER %X\n", *pinRegister);
 	return *pinRegister;
 }
