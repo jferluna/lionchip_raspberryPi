@@ -30,7 +30,9 @@ int setupGPIO(struct raspberry_peripheral* rp) {
 	if(rp->memFileDescriptor < 0) {
 		printf("Can't open /dev/mem file\n");
 		return -1;
-	} 
+	} else {
+		printf("/dev/mem openning successful!\n");
+	}
 
 	//Maps virtual memory of size of BLOCK_SIZE with reading and writing protection
 	rp->virtualMem = mmap(NULL, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, rp->memFileDescriptor, rp->physicalAddress);
@@ -39,6 +41,8 @@ int setupGPIO(struct raspberry_peripheral* rp) {
 		printf("Error:\n");
 		perror(NULL);
 		return -1;
+	} else {
+		printf("Virtual memory mapping successful!\n");
 	}
 	rp->address = (volatile unsigned int *) rp->virtualMem;
 
