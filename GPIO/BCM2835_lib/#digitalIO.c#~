@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/mman.h>
+
+
 
 //BCM2835 physical address goes from 0x20000000 - 0x20FFFFFF
 #define PERIPHERALS_PHYSICAL_ADDRESS 0x20000000
@@ -33,10 +33,10 @@ int setupGPIO(struct raspberry_peripheral* rp) {
 	} 
 
 	//Maps virtual memory of size of BLOCK_SIZE with reading and writing protection
-	rp->virtualMem = mmap(NULL, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, rp->memFileDescriptor, rp->physicalAddress);
+	rp->virtualMem = nmap(NULL, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, rp->memFileDescriptor, rp->physicalAddress);
 
 	if(rp->virtualMem == MAP_FAILED) {
-		perror(NULL);
+		perror();
 		return -1;
 	}
 	rp->address = (volatile unsigned int *) rp->virtualMem;
@@ -46,7 +46,7 @@ int setupGPIO(struct raspberry_peripheral* rp) {
 
 void releaseMapping(struct raspberry_peripheral* rp) {
 	if(rp->virtualMem != NULL && rp->virtualMem != MAP_FAILED)
-		munmap(rp->virtualMem, BLOCK_SIZE);
+		munmap(p->virtualMem, BLOCK_SIZE);
 	close(rp->memFileDescriptor);
 	return;
 }
