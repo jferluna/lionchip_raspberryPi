@@ -21,7 +21,7 @@ struct raspberry_peripheral {
 	volatile unsigned int* address;
 };
 
-int setupGPIO(struct raspberry_peripheral* rp) {
+int configGPIO(struct raspberry_peripheral* rp) {
 	//Sets GPIO physical offset
 	rp->physicalAddress = GPIO_BASE;
 	//Opens file with physical memory mapping
