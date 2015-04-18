@@ -92,7 +92,7 @@ int readPin(int pin, struct raspberry_peripheral* peripheral) {
 	//Point to GPLEV0 register (address 0x7E200034)
 	volatile unsigned int *pinRegister = peripheral->address + 13;
 	//Return pin value
-	if(*pinRegister & (0x01 << pin) == 0) {
+	if((*pinRegister & (0x01 << pin)) == 0) {
 		return 0;
 	} else {
 		return 1;
